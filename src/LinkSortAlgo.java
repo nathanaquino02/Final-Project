@@ -1,145 +1,185 @@
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class LinkSortAlgo {
 
-    //Merge Sort
-    // MergeSort
-    public static void merge(int arr[], int l, int m, int r) {
-        // Find sizes of two subarrays to be merged
-        int n1 = m - l + 1;
-        int n2 = r - m;
-        // Create temp arrays
-        int L[] = new int[n1];
-        int R[] = new int[n2];
-        // Copy data to temp arrays
-        for (int i = 0; i < n1; ++i)
-            L[i] = arr[l + i];
-        for (int j = 0; j < n2; ++j)
-            R[j] = arr[m + 1 + j];
-        // Merge the temp arrays
-        // Initial indices of first and second subarrays
-        int i = 0, j = 0;
-        // Initial index of merged subarray array
-        int k = l;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k] = L[i];
-                i++;
+    // Merge Sort for linked list
+    public static LinkedList<Integer> mergeSort(LinkedList<Integer> list) {
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        int mid = list.size() / 2;
+        LinkedList<Integer> left = new LinkedList<>(list.subList(0, mid));
+        LinkedList<Integer> right = new LinkedList<>(list.subList(mid, list.size()));
+
+        left = mergeSort(left);
+        right = mergeSort(right);
+
+        return merge(left, right);
+    }
+
+    private static LinkedList<Integer> merge(LinkedList<Integer> left, LinkedList<Integer> right) {
+        LinkedList<Integer> result = new LinkedList<>();
+        while (!left.isEmpty() && !right.isEmpty()) {
+            if (left.getFirst() <= right.getFirst()) {
+                result.add(left.pollFirst());
             } else {
-                arr[k] = R[j];
-                j++;
+                result.add(right.pollFirst());
             }
-            k++;
         }
-        // Copy remaining elements of L[] if any
-        while (i < n1) {
-            arr[k] = L[i];
-            i++;
-            k++;
-        }
-        // Copy remaining elements of R[] if any
-        while (j < n2) {
-            arr[k] = R[j];
-            j++;
-            k++;
+        result.addAll(left);
+        result.addAll(right);
+        return result;
+    }
+
+    // Radix Sort for linked list
+    public static void radixSort(LinkedList<Integer> list) {
+        int max = list.stream().mapToInt(Integer::intValue).max().orElse(0);
+        for (int exp = 1; max / exp > 0; exp *= 10) {
+            countSort(list, exp);
         }
     }
 
-    // Main function that sorts arr[l..r] using merge()
-    public static void mergeSort(int arr[], int l, int r) {
-        if (l < r) {
-            // Find the middle point
-            int m = l + (r - l) / 2;
-            // Sort first and second halves
-            mergeSort(arr, l, m);
-            mergeSort(arr, m + 1, r);
-            // Merge the sorted halves
-            merge(arr, l, m, r);
+    private static void countSort(LinkedList<Integer> list, int exp) {
+        int[] count = new int[10];
+        LinkedList<Integer> output = new LinkedList<>();
+        for (int num : list) {
+            count[(num / exp) % 10]++;
         }
-    }
-
-    // Radix Sort
-    // A utility function to get maximum value in arr[]
-    static int getMax(int arr[], int n) {
-        int mx = arr[0];
-        for (int i = 1; i < n; i++)
-            if (arr[i] > mx)
-                mx = arr[i];
-        return mx;
-    }
-
-    // A function to do counting sort of arr[] according to the digit represented by exp.
-    static void countSort(int arr[], int n, int exp) {
-        int output[] = new int[n]; // output array
-        int i;
-        int count[] = new int[10];
-        Arrays.fill(count, 0);
-        // Store count of occurrences in count[]
-        for (i = 0; i < n; i++)
-            count[(arr[i] / exp) % 10]++;
-        // Change count[i] so that count[i] now contains actual position of this digit in output[]
-        for (i = 1; i < 10; i++)
+        for (int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
-        // Build the output array
-        for (i = n - 1; i >= 0; i--) {
-            output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-            count[(arr[i] / exp) % 10]--;
         }
-        // Copy the output array to arr[], so that arr[] now contains sorted numbers according to
-        // current digit
-        for (i = 0; i < n; i++)
-            arr[i] = output[i];
+        for (int i = list.size() - 1; i >= 0; i--) {
+            output.addFirst(list.get(i));
+        }
+        list.clear();
+        for (int i = 0; i < output.size(); i++) {
+            list.addLast(output.get(i));
+        }
     }
 
-    // The main function to that sorts arr[] of size n using Radix Sort
-    static void radixSort(int arr[], int n) {
-        // Find the maximum number to know number of digits
-        int m = getMax(arr, n);
-        // Do counting sort for every digit. Note that instead of passing digit number, exp is
-        // passed. exp is 10^i where i is current digit number
-        for (int exp = 1; m / exp > 0; exp *= 10)
-            countSort(arr, n, exp);
+    // Quick Sort for linked list using nodes
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
     }
 
-    // QuickSort
-    // A utility function to swap two elements
-    static void swap(int[] arr, int i, int j) {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    Node head;
+
+    void addNode(int data) {
+        if (head == null) {
+            head = new Node(data);
+            return;
+        }
+
+        Node curr = head;
+        while (curr.next != null)
+            curr = curr.next;
+
+        Node newNode = new Node(data);
+        curr.next = newNode;
     }
 
-    // This function takes last element as pivot, places the pivot element at its correct
-    // position in sorted array, and places all smaller to left of pivot and all greater elements
-    // to right of pivot
-    static int partition(int[] arr, int low, int high) {
-        // Choosing the pivot
-        int pivot = arr[high];
-        // Index of smaller element and indicates the right position of pivot found so far
-        int i = (low - 1);
-        for (int j = low; j <= high - 1; j++) {
-            // If current element is smaller than the pivot
-            if (arr[j] < pivot) {
-                // Increment index of smaller element
-                i++;
-                swap(arr, i, j);
+    Node getLastNode(Node node) {
+        while (node != null && node.next != null) {
+            node = node.next;
+        }
+        return node;
+    }
+
+    Node partitionLast(Node start, Node end) {
+        if (start == end || start == null || end == null)
+            return start;
+
+        Node pivot_prev = start;
+        Node curr = start;
+        int pivot = end.data;
+
+        while (start != end) {
+            if (start.data < pivot) {
+                pivot_prev = curr;
+                int temp = curr.data;
+                curr.data = start.data;
+                start.data = temp;
+                curr = curr.next;
             }
+            start = start.next;
         }
-        swap(arr, i + 1, high);
-        return (i + 1);
+
+        int temp = curr.data;
+        curr.data = pivot;
+        end.data = temp;
+
+        return pivot_prev;
     }
 
-    // The main function that implements QuickSort
-    // arr[] --> Array to be sorted,
-    // low --> Starting index,
-    // high --> Ending index
-    static void quickSort(int[] arr, int low, int high) {
-        if (low < high) {
-            // pi is partitioning index, arr[p] is now at right place
-            int pi = partition(arr, low, high);
-            // Separately sort elements before partition and after partition
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
+    void quickSort(Node start, Node end) {
+        if (start == null || start == end || start == end.next)
+            return;
+
+        Node pivot_prev = partitionLast(start, end);
+        quickSort(start, pivot_prev);
+
+        if (pivot_prev != null && pivot_prev == start)
+            quickSort(pivot_prev.next, end);
+        else if (pivot_prev != null && pivot_prev.next != null)
+            quickSort(pivot_prev.next.next, end);
+    }
+
+    public static void main(String[] args) {
+        int[] sizes = {500, 10000, 100000};
+        Random random = new Random();
+
+        for (int size : sizes) {
+            System.out.println("Linked List size = " + size);
+
+            // Merge Sort
+            System.out.println("\nMerge Sort");
+            for (int run = 1; run <= 10; run++) {
+                LinkedList<Integer> list = new LinkedList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(random.nextInt(size));
+                }
+                long startTime = System.nanoTime();
+                mergeSort(list);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Radix Sort
+            System.out.println("\nRadix Sort");
+            for (int run = 1; run <= 10; run++) {
+                LinkedList<Integer> list = new LinkedList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(random.nextInt(size));
+                }
+                long startTime = System.nanoTime();
+                radixSort(list);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Quick Sort
+            System.out.println("\nQuick Sort");
+            for (int run = 1; run <= 10; run++) {
+                LinkSortAlgo list = new LinkSortAlgo();
+                for (int i = 0; i < size; i++) {
+                    list.addNode(random.nextInt(size));
+                }
+                Node end = list.getLastNode(list.head);
+                long startTime = System.nanoTime();
+                list.quickSort(list.head, end);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            System.out.println();
         }
     }
 }

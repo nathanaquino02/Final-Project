@@ -178,7 +178,7 @@ public class SortAlgo {
 
     // Radix Sort
     // A utility function to get maximum value in arr[]
-    static int getMax(int arr[], int n) {
+    public static int getMax(int arr[], int n) {
         int mx = arr[0];
         for (int i = 1; i < n; i++)
             if (arr[i] > mx)
@@ -187,7 +187,7 @@ public class SortAlgo {
     }
 
     // A function to do counting sort of arr[] according to the digit represented by exp.
-    static void countSort(int arr[], int n, int exp) {
+    public static void countSort(int arr[], int n, int exp) {
         int output[] = new int[n]; // output array
         int i;
         int count[] = new int[10];
@@ -210,7 +210,7 @@ public class SortAlgo {
     }
 
     // The main function to that sorts arr[] of size n using Radix Sort
-    static void radixSort(int arr[], int n) {
+    public static void radixSort(int arr[], int n) {
         // Find the maximum number to know number of digits
         int m = getMax(arr, n);
         // Do counting sort for every digit. Note that instead of passing digit number, exp is
@@ -221,7 +221,7 @@ public class SortAlgo {
 
     // QuickSort
     // A utility function to swap two elements
-    static void swap(int[] arr, int i, int j) {
+    public static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
@@ -230,7 +230,7 @@ public class SortAlgo {
     // This function takes last element as pivot, places the pivot element at its correct
     // position in sorted array, and places all smaller to left of pivot and all greater elements
     // to right of pivot
-    static int partition(int[] arr, int low, int high) {
+    public static int partition(int[] arr, int low, int high) {
         // Choosing the pivot
         int pivot = arr[high];
         // Index of smaller element and indicates the right position of pivot found so far
@@ -251,7 +251,7 @@ public class SortAlgo {
     // arr[] --> Array to be sorted,
     // low --> Starting index,
     // high --> Ending index
-    static void quickSort(int[] arr, int low, int high) {
+    public static void quickSort(int[] arr, int low, int high) {
         if (low < high) {
             // pi is partitioning index, arr[p] is now at right place
             int pi = partition(arr, low, high);
