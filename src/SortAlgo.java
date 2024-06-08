@@ -266,69 +266,113 @@ public class SortAlgo {
         Random random = new Random();
 
         for (int size : sizes) {
-            int[] array = new int[size];
-            for (int i = 0; i < size; i++) {
-                array[i] = random.nextInt(size);
-            }
-
             System.out.println("Array size = " + size);
 
+            // Bubble Sort
+            System.out.println("Bubble Sort");
             for (int run = 1; run <= 10; run++) {
-                int[] bubbleArray = array.clone();
-                int[] insertionArray = array.clone();
-                int[] selectionArray = array.clone();
-                int[] mergeArray = array.clone();
-                int[] heapArray = array.clone();
-                int[] shellArray = array.clone();
-                int[] radixArray = array.clone();
-                int[] quickArray = array.clone();
-
-                long startTime, endTime;
-
-                System.out.println("Run #" + run);
-
-                startTime = System.nanoTime();
-                bubbleSort(bubbleArray, bubbleArray.length);
-                endTime = System.nanoTime();
-                System.out.printf("Bubble Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                insertionSort(insertionArray);
-                endTime = System.nanoTime();
-                System.out.printf("Insertion Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                selectionSort(selectionArray);
-                endTime = System.nanoTime();
-                System.out.printf("Selection Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                mergeSort(mergeArray, 0, mergeArray.length - 1);
-                endTime = System.nanoTime();
-                System.out.printf("Merge Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                heapSort(heapArray);
-                endTime = System.nanoTime();
-                System.out.printf("Heap Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                shellSort(shellArray);
-                endTime = System.nanoTime();
-                System.out.printf("Shell Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                radixSort(radixArray, radixArray.length);
-                endTime = System.nanoTime();
-                System.out.printf("Radix Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                startTime = System.nanoTime();
-                quickSort(quickArray, 0, quickArray.length - 1);
-                endTime = System.nanoTime();
-                System.out.printf("Quick Sort : %.9f seconds%n", (endTime - startTime) / 1e9);
-
-                System.out.println();
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                bubbleSort(array.clone(), size);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
             }
+
+            // Insertion Sort
+            System.out.println("\nInsertion Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                insertionSort(array.clone());
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Selection Sort
+            System.out.println("\nSelection Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                selectionSort(array.clone());
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Merge Sort
+            System.out.println("\nMerge Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                mergeSort(array.clone(), 0, size - 1);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Heap Sort
+            System.out.println("\nHeap Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                heapSort(array.clone());
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Shell Sort
+            System.out.println("\nShell Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                shellSort(array.clone());
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Radix Sort
+            System.out.println("\nRadix Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                radixSort(array.clone(), size);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            // Quick Sort
+            System.out.println("\nQuick Sort");
+            for (int run = 1; run <= 10; run++) {
+                int[] array = new int[size];
+                for (int i = 0; i < size; i++) {
+                    array[i] = random.nextInt(size);
+                }
+                long startTime = System.nanoTime();
+                quickSort(array.clone(), 0, size - 1);
+                long endTime = System.nanoTime();
+                System.out.printf("Run %-2d: %.6f seconds%n", run, (endTime - startTime) / 1e9);
+            }
+
+            System.out.println();
         }
     }
 }
